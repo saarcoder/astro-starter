@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from "astro";
+import MainLayout from "../../layouts/MainLayout.astro";
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import { formatDate } from "../../utils";
+
+export async function getStaticPaths() {
+    const allBlogArticles: CollectionEntry<'blog'>[]= (await getCollection("blog")).sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>)=> b.data.pubDate.valueOf()- a.data.pubDate.valueOf());
+    return allBlogArticles.map(entry=> ({
+        params: {slug: entry.slug},
+        props: {entry}
+    }));
+}
+
+const { entry }= Astro.props;
+---
+<MainLayout>
+    <h1>{entry.data.title}</h1>
+    <p>{entry.data.author}</p>
+    <p>{formatDate(entry.data.pubDate)}</p>
+</MainLayout>

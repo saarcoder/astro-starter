@@ -11,6 +11,7 @@ export const GET: APIRoute= async ({ url }): Promise<Response>=> {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
     });
+    
     const allBlogArticles: CollectionEntry<'blog'>[]= await getCollection('blog');
 
     const searchResults= allBlogArticles.filter(article=> {
